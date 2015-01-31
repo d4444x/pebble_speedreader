@@ -1,0 +1,43 @@
+var UI = require('ui');
+var ajax = require('ajax');
+var Vector2 = require('vector2');
+
+ var menuItems = [
+   {title: "Start" }, 
+   {title: "Show Progress"}, 
+   {title: "Library"}, 
+   {title: "Settings"}];
+
+
+var wordsToRead = ["1", "2", "3", "4", "5"];
+var i = 0;
+
+var bookTitle = "None";
+
+var mainMenu = new UI.Menu({
+  sections: [{
+    title: "Currently Reading",
+    items: menuItems
+  }]
+});
+
+mainMenu.show();
+
+var readingWindow = new UI.Window();
+
+var splashCard = new UI.Card();
+splashCard.body('Reading in time');
+
+mainMenu.on('select', function(e) {
+  if (e.item.title === "Start"){
+  splashCard.show();
+  setTimeout(function() {
+    splashCard.hide();
+    readingWindow.show();
+  }, 1500);
+  }
+});
+
+readingWindow.on('back', function(e) {
+  readingWindow.hide();
+});
