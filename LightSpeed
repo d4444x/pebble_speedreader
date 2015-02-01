@@ -2,42 +2,95 @@ var UI = require('ui');
 var ajax = require('ajax');
 var Vector2 = require('vector2');
 
- var menuItems = [
-   {title: "Start" }, 
-   {title: "Show Progress"}, 
-   {title: "Library"}, 
-   {title: "Settings"}];
-
-
-var wordsToRead = ["1", "2", "3", "4", "5"];
 var i = 0;
+var wordList = ["food", "is", "gud", "I", "really", "like", "food", "a", "lot"];
 
-var bookTitle = "None";
+var len = wordList[0].length;
+var centerIndex = (len/2) - 1;
+var part1 = wordList[0].substring(0,centerIndex);
+var startPos1 = 66 - 11 * (part1.length);
+var part2 = wordList[0].substring(centerIndex, centerIndex+1);
+var part3 = wordList[0].substring(centerIndex+1);
 
-var mainMenu = new UI.Menu({
-  sections: [{
-    title: "Currently Reading",
-    items: menuItems
-  }]
+var viewWindow = new UI.Window();
+
+var text1 = new UI.Text({
+  position: new Vector2(startPos1, 45),
+  size: new Vector2(144, 168),
+  text: part1,
+  font:'GOTHIC_28_BOLD',
+  color: 'white',
+  textOverflow:'wrap',
+  textAlign:'left',
 });
 
-mainMenu.show();
+var text2 = new UI.Text({
+  position: new Vector2(66, 45),
+  size: new Vector2(11,40),
+  text: part2,
+  font:'GOTHIC_28_BOLD',
+  color:'white',
+  textOverflow:'wrap',
+  textAlign:'left',
+  borderColor: 'white'
+});
 
-var readingWindow = new UI.Window();
+var text3 = new UI.Text({
+  position: new Vector2(77, 45),
+  size: new Vector2(144, 168),
+  text: part3,
+  font:'GOTHIC_28_BOLD',
+  color:'white',
+  textOverflow:'wrap',
+  textAlign:'left',
+});
 
-var splashCard = new UI.Card();
-splashCard.body('Reading in time');
+var myTimer = setInterval( function() {
+  if (i < 8){
 
-mainMenu.on('select', function(e) {
-  if (e.item.title === "Start"){
-  splashCard.show();
-  setTimeout(function() {
-    splashCard.hide();
-    readingWindow.show();
-  }, 1500);
+    i++;
+    var len = wordList[i].length;
+    var centerIndex;
+    var part1;
+    var startPos1;
+    var part2;
+    var part3;
+    
+    if (len === 1){
+    centerIndex = 0;
+    part1 = "";
+    startPos1 = 0;
+    part2 = wordList[i];
+    part3 = "" ; 
+    } else {
+      
+    centerIndex = Math.floor(len/2);
+    part1 = wordList[i].substring(0,centerIndex);
+    startPos1 = 66 - 11 * (part1.length);
+    part2 = wordList[centerIndex];
+    part3 = wordList[i].substring(centerIndex+1);  
   }
-});
+    
+    viewWindow.remove(text1);
+    text1 = new UI.Text({
+      position: new Vector2(startPos1, 45),
+      size: new Vector2(144, 168),
+      text: part1,
+      font:'GOTHIC_28_BOLD',
+      color: 'white',
+      textOverflow:'wrap',
+      textAlign:'left',
+    });
+    
+    viewWindow.add(text1);
+    text2.text(part2);
+    text3.text(part3);
+  } else {
+    i = 0;
+  }
+}, 1000);
 
-readingWindow.on('back', function(e) {
-  readingWindow.hide();
-});
+viewWindow.add(text1);
+viewWindow.add(text2);
+viewWindow.add(text3);
+viewWindow.show();
