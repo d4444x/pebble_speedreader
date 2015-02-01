@@ -67,7 +67,7 @@ var myTimer = setInterval( function() {
     centerIndex = Math.floor(len/2);
     part1 = wordList[i].substring(0,centerIndex);
     startPos1 = 66 - 11 * (part1.length);
-    part2 = wordList[centerIndex];
+    part2 = wordList[i][centerIndex];
     part3 = wordList[i].substring(centerIndex+1);  
   }
     
